@@ -72,9 +72,9 @@ public final class QuoteSyncJob {
                 String symbol = iterator.next();
 
 
+                // TODO: stock may be null
                 Stock stock = quotes.get(symbol);
                 StockQuote quote = stock.getQuote();
-
                 float price = quote.getPrice().floatValue();
                 float change = quote.getChange().floatValue();
                 float percentChange = quote.getChangeInPercent().floatValue();

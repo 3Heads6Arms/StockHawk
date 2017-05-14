@@ -8,4 +8,8 @@
     <color name="material_red_700">#D50000</color>
     <color name="material_green_700">#00C853</color>
 
+    <color name="chart_gridlines">@android:color/white</color>
+    <color name="chart_label">#dcdcdc</color>
+    <color name="chart_value">#56f7e1</color>
+    <color name="chart_highlight">#ff7a2d</color>
 </resources>
