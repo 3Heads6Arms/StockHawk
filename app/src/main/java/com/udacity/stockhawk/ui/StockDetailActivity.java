@@ -120,6 +120,7 @@ public class StockDetailActivity extends AppCompatActivity {
         mStockHistoryLc.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         mStockHistoryLc.getXAxis().setTextColor(ContextCompat.getColor(this, R.color.chart_label));
 
+        // TODO: Implement better marker than Highlight text/label
         mStockHistoryLc.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -131,6 +132,7 @@ public class StockDetailActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected() {
                 mHighlightLabel.setVisibility(View.INVISIBLE);
+                mHighlight.setVisibility(View.INVISIBLE);
             }
         });
         mStockHistoryLc
@@ -184,6 +186,7 @@ public class StockDetailActivity extends AppCompatActivity {
         mCurrentStock.setText(currentStock);
         mCurrentStock.setBackgroundResource(backgroundStyle);
         mHighlightLabel.setVisibility(View.INVISIBLE);
+        mHighlight.setVisibility(View.INVISIBLE);
 
         cursor.close();
     }
