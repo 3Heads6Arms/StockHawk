@@ -1,7 +1,9 @@
 package com.udacity.stockhawk.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
@@ -33,6 +35,18 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener,
         StockAdapter.StockAdapterOnClickHandler {
+
+    public static final String NEW_SYMBOL_ERROR_ACTION = "SymbolErrorReceiver";
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String symbol = intent.getStringExtra(Intent.EXTRA_TEXT);
+            String message = getString(R.string.error_invalid_symbol, symbol);
+            PrefUtils.removeStock(context, symbol);
+
+            Snackbar.make(error, message, Snackbar.LENGTH_LONG).show();
+        }
+    };
 
     private static final int STOCK_LOADER = 0;
     @SuppressWarnings("WeakerAccess")
@@ -85,8 +99,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
             }
         }).attachToRecyclerView(stockRecyclerView);
-
-
     }
 
     private boolean networkUp() {
@@ -107,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.VISIBLE);
         } else if (!networkUp()) {
             swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(this, R.string.toast_no_connectivity, Toast.LENGTH_LONG).show();
+            Snackbar.make(error, R.string.toast_no_connectivity, Snackbar.LENGTH_LONG).show();
         } else if (PrefUtils.getStocks(this).size() == 0) {
             swipeRefreshLayout.setRefreshing(false);
             error.setText(getString(R.string.error_no_stocks));
@@ -128,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 swipeRefreshLayout.setRefreshing(true);
             } else {
                 String message = getString(R.string.toast_stock_added_no_connectivity, symbol);
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                Snackbar.make(error, message, Snackbar.LENGTH_LONG).show();
             }
 
             PrefUtils.addStock(this, symbol);
@@ -153,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         adapter.setCursor(data);
     }
-
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -190,5 +201,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mReceiver, new IntentFilter(NEW_SYMBOL_ERROR_ACTION));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(mReceiver);
     }
 }

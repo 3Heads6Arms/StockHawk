@@ -125,8 +125,12 @@ public class StockDetailActivity extends AppCompatActivity {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 mHighlightLabel.setVisibility(View.VISIBLE);
+                mHighlight.setVisibility(View.VISIBLE);
+
                 DecimalFormat dollarFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
-                mHighlight.setText(dollarFormat.format(e.getY()));
+                String highlightedValue = String.format("%s\n%s", dollarFormat.format(e.getY()), dateValues.get((int) e.getX()));
+
+                mHighlight.setText(highlightedValue);
             }
 
             @Override

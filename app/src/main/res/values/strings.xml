@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Stock Hawk</string>
 
     <string name="pref_stocks_initialized_key" translatable="false">initialized</string>
@@ -32,5 +32,6 @@
     <string name="toast_stock_added_no_connectivity">Symbol %s added. Will refresh when network available.</string>
     <string name="toast_no_connectivity">Will refresh when network available.</string>
     <string name="highlighted">Highlighted</string>
+    <string name="error_invalid_symbol">Unable to find stock for <xliff:g id="symbol">%1$s</xliff:g></string>
 
 </resources>
