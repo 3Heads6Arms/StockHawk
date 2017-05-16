@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.error)
     TextView error;
+    @BindView(R.id.error_description)
+    TextView errorDescription;
     private StockAdapter adapter;
 
     @Override
@@ -116,16 +118,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (!networkUp() && adapter.getItemCount() == 0) {
             swipeRefreshLayout.setRefreshing(false);
             error.setText(getString(R.string.error_no_network));
+            errorDescription.setText(getString(R.string.error_no_network_description));
             error.setVisibility(View.VISIBLE);
+            errorDescription.setVisibility(View.VISIBLE);
         } else if (!networkUp()) {
             swipeRefreshLayout.setRefreshing(false);
             Snackbar.make(error, R.string.toast_no_connectivity, Snackbar.LENGTH_LONG).show();
         } else if (PrefUtils.getStocks(this).size() == 0) {
             swipeRefreshLayout.setRefreshing(false);
             error.setText(getString(R.string.error_no_stocks));
+            errorDescription.setText(getString(R.string.error_no_stocks_description));
             error.setVisibility(View.VISIBLE);
+            errorDescription.setVisibility(View.VISIBLE);
         } else {
             error.setVisibility(View.GONE);
+            errorDescription.setVisibility(View.GONE);
         }
     }
 
