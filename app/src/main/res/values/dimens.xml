@@ -3,4 +3,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="item_horizontal_margin">8dp</dimen>
     <dimen name="content_padding">8dp</dimen>
+    <dimen name="fab_transition_z">12dp</dimen>
+    <dimen name="fab_elevation">6dp</dimen>
 </resources>

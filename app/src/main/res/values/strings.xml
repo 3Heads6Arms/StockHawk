@@ -37,5 +37,5 @@
     <string name="highlighted">Highlighted</string>
     <string name="error_invalid_symbol">Unable to find stock for <xliff:g id="symbol">%1$s</xliff:g></string>
 
-    <string name="a11y_add_stock">Add Stock</string>
+    <string name="a11y_add_stock">Add Stock Button</string>
 </resources>
