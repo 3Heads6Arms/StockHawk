@@ -15,11 +15,6 @@ import com.udacity.stockhawk.ui.StockDetailActivity;
  * Implementation of App Widget functionality.
  */
 public class StockHawkWidget extends AppWidgetProvider {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
-
-    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
