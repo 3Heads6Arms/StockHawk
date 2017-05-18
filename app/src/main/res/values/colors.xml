@@ -12,4 +12,5 @@
     <color name="chart_label">#dcdcdc</color>
     <color name="chart_value">#56f7e1</color>
     <color name="chart_highlight">#ff7a2d</color>
+    <color name="background_for_white_text">#28000000</color>
 </resources>
