@@ -104,6 +104,7 @@ public class StockDetailActivity extends AppCompatActivity {
         dataSet.setColor(ContextCompat.getColor(this, R.color.chart_value));
         dataSet.setValueTextColor(ContextCompat.getColor(this, R.color.chart_label));
         dataSet.setDrawCircles(false);
+        dataSet.setDrawValues(false);
 
         LineData lineData = new LineData(dataSet);
         Description description = new Description();

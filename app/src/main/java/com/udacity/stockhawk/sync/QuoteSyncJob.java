@@ -14,15 +14,20 @@ import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.ui.MainActivity;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
+import au.com.bytecode.opencsv.CSVReader;
 import timber.log.Timber;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
@@ -81,19 +86,19 @@ public final class QuoteSyncJob {
                     float change = quote.getChange().floatValue();
                     float percentChange = quote.getChangeInPercent().floatValue();
 
+
                     // WARNING! Don't request historical data for a stock that doesn't exist!
                     // The request will hang forever X_x
                     // TODO: Remove comment on stock's history
 //                    List<HistoricalQuote> history = stock.getHistory(from, to, Interval.WEEKLY);
-//
-//                    StringBuilder historyBuilder = new StringBuilder();
-//
-//                    for (HistoricalQuote it : history) {
-//                        historyBuilder.append(it.getDate().getTimeInMillis());
-//                        historyBuilder.append(", ");
-//                        historyBuilder.append(it.getClose());
-//                        historyBuilder.append("\n");
-//                    }
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("quotes.csv")));
+                    String currentLine;
+
+                    StringBuilder historyBuilder = new StringBuilder();
+                    while ((currentLine = reader.readLine()) != null) {
+                        historyBuilder.append(currentLine);
+                        historyBuilder.append("\n");
+                    }
 
                     ContentValues quoteCV = new ContentValues();
                     quoteCV.put(Contract.Quote.COLUMN_SYMBOL, symbol);
@@ -102,7 +107,7 @@ public final class QuoteSyncJob {
                     quoteCV.put(Contract.Quote.COLUMN_ABSOLUTE_CHANGE, change);
 
                     // TODO: Remove comment on stock's history
-                    quoteCV.put(Contract.Quote.COLUMN_HISTORY, ""); //historyBuilder.toString());
+                    quoteCV.put(Contract.Quote.COLUMN_HISTORY, historyBuilder.toString());
 
                     quoteCVs.add(quoteCV);
                 } else {
@@ -123,9 +128,13 @@ public final class QuoteSyncJob {
             Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
             context.sendBroadcast(dataUpdatedIntent);
 
-        } catch (IOException exception) {
+        } catch (
+                IOException exception)
+
+        {
             Timber.e(exception, "Error fetching stock quotes");
         }
+
     }
 
     private static void schedulePeriodic(Context context) {
