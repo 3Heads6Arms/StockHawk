@@ -89,8 +89,17 @@ public final class QuoteSyncJob {
 
                     // WARNING! Don't request historical data for a stock that doesn't exist!
                     // The request will hang forever X_x
-                    // TODO: Remove comment on stock's history
+                    // TODO: Remove comment on stock's history if API works again
 //                    List<HistoricalQuote> history = stock.getHistory(from, to, Interval.WEEKLY);
+//                    StringBuilder historyBuilder = new StringBuilder();
+//                    for (HistoricalQuote it : history) {
+//                        historyBuilder.append(it.getDate().getTimeInMillis());
+//                        historyBuilder.append(valueSeparator);
+//                        historyBuilder.append(it.getClose());
+//                        historyBuilder.append("\n");
+//                    }
+
+                    // Mocked history data from file, so the chart can display some data
                     BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("quotes.csv")));
                     String currentLine;
 
@@ -106,7 +115,6 @@ public final class QuoteSyncJob {
                     quoteCV.put(Contract.Quote.COLUMN_PERCENTAGE_CHANGE, percentChange);
                     quoteCV.put(Contract.Quote.COLUMN_ABSOLUTE_CHANGE, change);
 
-                    // TODO: Remove comment on stock's history
                     quoteCV.put(Contract.Quote.COLUMN_HISTORY, historyBuilder.toString());
 
                     quoteCVs.add(quoteCV);
